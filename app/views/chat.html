@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Service Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to Our Customer Service</h1>
+        <p>How can we help you today?</p>
+    </div>
+    <div class="suggestions">
+        <button class="suggestion-btn" onclick="usePrompt('What services do you offer?')">Our Services</button>
+        <button class="suggestion-btn" onclick="usePrompt('What are your business hours?')">Business Hours</button>
+        <button class="suggestion-btn" onclick="usePrompt('What is your contact email?')">Contact Email</button>
+    </div>
+    <div id="chat-container">
+        <div id="messages"></div>
+        <div class="input-container">
+            <div class="input-wrapper">
+                <input type="text" id="message-input" placeholder="Type your message...">
+            </div>
+            <button onclick="sendMessage()">Send</button>
+            <button id="new-chat-btn" onclick="startNewChat()">New Chat</button>
+        </div>
+    </div>
+
+    <script>
+        const messagesContainer = document.getElementById('messages');
+        const messageInput = document.getElementById('message-input');
+        let currentChatId = null;
+        let currentUserId = null;
+
+        // Start a chat automatically when the page loads
+        document.addEventListener('DOMContentLoaded', startNewChat);
+
+        function startNewChat() {
+            fetch('/api/create_chat', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                currentChatId = data.chat_id;
+                currentUserId = data.user_id;
+                messagesContainer.innerHTML = '';
+            })
+            .catch(() => {
+                alert('Error creating chat');
+            });
+        }
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            appendMessage('user', message);
+            messageInput.value = '';
+
+            // Send to server
+            fetch('/api/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: currentUserId,
+                    chat_id: currentChatId,
+                    user_message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                appendMessage('assistant', data.message);
+            })
+            .catch(() => {
+                alert('Error sending message');
+            });
+        }
+
+        function usePrompt(prompt) {
+            messageInput.value = prompt;
+            sendMessage();
+        }
+
+        function appendMessage(role, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.textContent = content;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Handle Enter key
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

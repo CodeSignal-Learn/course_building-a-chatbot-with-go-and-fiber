@@ -1,0 +1,105 @@
+/* Ensure html and body take full height and have no margin or padding */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Set body as a flex container with a column layout and a modern font */
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+/* Style the header with center alignment, padding, and background color */
+.header {
+    text-align: center;
+    padding: 10px;
+    background-color: #f5f5f5;
+}
+
+/* Use flexbox to center suggestion buttons and add spacing */
+.suggestions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+/* Style suggestion buttons with vibrant color and padding */
+.suggestion-btn {
+    background: #ff9800;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style chat container as a flex column, centered and responsive */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Style messages area with border, padding, and scrollable overflow */
+#messages {
+    flex-grow: 1;
+    margin: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+/* Add spacing and padding to individual messages */
+.message {
+    margin: 10px 0;
+    padding: 8px;
+}
+
+/* Align user messages to the right */
+.user {
+    text-align: right;
+}
+
+/* Align assistant messages to the left */
+.assistant {
+    text-align: left;
+}
+
+/* Use flexbox for input container with spacing */
+.input-container {
+    display: flex;
+    gap: 5px;
+    margin: 10px;
+}
+
+/* Allow input wrapper to grow and fill available space */
+.input-wrapper {
+    flex-grow: 1;
+}
+
+/* Style message input field with full width, padding, and border */
+#message-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Style all buttons with padding, color, and background */
+button {
+    padding: 8px 16px;
+    color: #fff;
+    background: #1976d2;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style new chat button with a specific background color */
+#new-chat-btn {
+    background: #2e7d32;
+}
